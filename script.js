@@ -15,7 +15,7 @@ function openGiftBox() {
   if(!ok){ alert('Failed to open the gift.'); return; }
 
   const nameEl = document.getElementById('greet-name');
-  if(nameEl) nameEl.innerHTML = 'Happy Birthday,<span class="name-signature">Teju</span> !';
+  if(nameEl) nameEl.innerHTML = 'Happy Birthday,<span class="name-signature">Teju</span>!';
 
   // Animate the lid
   const lid = document.querySelector('.lid');
