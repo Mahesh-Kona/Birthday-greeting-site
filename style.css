@@ -122,3 +122,62 @@ footer{
 .lid.open{ transform: translateY(-64px) rotate(-20deg) }
 
 @media(min-width:800px){ #greet-name{ font-size:2.6rem } #portrait{ width:220px } }
+
+/* Balloon floating animation on landing page */
+#balloon-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9000; overflow:hidden }
+.balloon{ position:absolute; bottom:-180px; left:10%; width:64px; height:86px; border-radius:56% 56% 48% 48%; background:#ff6ba6; box-shadow: inset -8px -8px 18px rgba(255,255,255,0.15), 0 10px 22px rgba(120,40,80,0.08); opacity:0.95; transform:translateY(0) rotate(-6deg); animation: rise 12s linear infinite, floatSide 4s ease-in-out infinite; }
+.balloon::after{ content:''; position:absolute; left:50%; top:92%; transform:translateX(-50%); width:2px; height:76px; background:rgba(0,0,0,0.12); border-radius:2px }
+
+/* Slight color and size variations via nth-child */
+#balloon-wrap .balloon:nth-child(1){ left:6%; background:#ff90b3; width:54px; height:72px; animation-duration:10s; animation-delay:0.3s }
+#balloon-wrap .balloon:nth-child(2){ left:20%; background:#ffd6e5; width:70px; height:94px; animation-duration:13s; animation-delay:1.2s }
+#balloon-wrap .balloon:nth-child(3){ left:34%; background:#ffb3d1; width:58px; height:76px; animation-duration:11.5s; animation-delay:0.6s }
+#balloon-wrap .balloon:nth-child(4){ left:48%; background:#ffd0e8; width:66px; height:88px; animation-duration:14s; animation-delay:2s }
+#balloon-wrap .balloon:nth-child(5){ left:62%; background:#ff9fb8; width:52px; height:70px; animation-duration:9.5s; animation-delay:0.1s }
+#balloon-wrap .balloon:nth-child(6){ left:75%; background:#ffb8cc; width:72px; height:98px; animation-duration:15s; animation-delay:1.6s }
+#balloon-wrap .balloon:nth-child(7){ left:84%; background:#ffe6f1; width:48px; height:66px; animation-duration:12.5s; animation-delay:0.9s }
+#balloon-wrap .balloon:nth-child(8){ left:92%; background:#ffc3de; width:60px; height:82px; animation-duration:13.5s; animation-delay:2.6s }
+
+@keyframes rise{
+  0%{ transform: translateY(0) rotate(-6deg); opacity:0 }
+  6%{ opacity:1 }
+  100%{ transform: translateY(-140vh) rotate(18deg); opacity:0.92 }
+}
+
+@keyframes floatSide{
+  0%{ transform: translateY(0) translateX(0) }
+  50%{ transform: translateY(0) translateX(28px) }
+  100%{ transform: translateY(0) translateX(0) }
+}
+
+/* Make sure balloons don't show once greeting opens (they can remain but hide visually) */
+#greeting.show-balloons + #balloon-wrap, #greeting.show-balloons ~ #balloon-wrap{ display:block }
+
+/* Balloons that originate from the gift box */
+.gift-balloon-wrap{ position:fixed; pointer-events:none; inset:0; z-index:10002; overflow:visible }
+.gift-balloon{ position:fixed; width:56px; height:74px; border-radius:56% 56% 48% 48%; box-shadow: inset -6px -6px 14px rgba(255,255,255,0.12), 0 8px 14px rgba(120,40,80,0.08); opacity:0; transform-origin:center bottom; }
+.gift-balloon::after{ content:''; position:absolute; left:50%; top:92%; transform:translateX(-50%); width:2px; height:60px; background:rgba(0,0,0,0.12); border-radius:2px }
+
+/* Anim: rise from the starting top to far above the viewport while swaying */
+@keyframes riseFromBox{
+  0%{ transform: translateY(0) rotate(-6deg); opacity:0 }
+  6%{ opacity:1 }
+  70%{ transform: translateY(-80vh) rotate(12deg) }
+  100%{ transform: translateY(-140vh) rotate(22deg); opacity:0 }
+}
+
+@keyframes sway{
+  0%{ transform: translateX(0) }
+  50%{ transform: translateX(22px) }
+  100%{ transform: translateX(0) }
+}
+
+/* small color presets so JS can swap classless colors */
+.gift-balloon.color-1{ background:#ff90b3 }
+.gift-balloon.color-2{ background:#ffd6e5 }
+.gift-balloon.color-3{ background:#ffb3d1 }
+.gift-balloon.color-4{ background:#ffd0e8 }
+.gift-balloon.color-5{ background:#ff9fb8 }
+.gift-balloon.color-6{ background:#ffb8cc }
+
+

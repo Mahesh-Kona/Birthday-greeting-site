@@ -20,6 +20,8 @@ function openGiftBox() {
   // Animate the lid
   const lid = document.querySelector('.lid');
   if(lid) lid.classList.add('open');
+  // spawn balloons from the box as it opens
+  try{ spawnGiftBalloons(10); }catch(e){ console.warn('spawnGiftBalloons failed', e); }
   // Stop the bounce animation on box
   const box = document.getElementById('gift-box');
   if(box) box.style.animation = 'none';
@@ -32,6 +34,8 @@ function openGiftBox() {
 
       // Show greeting first so user always sees something
       if(greeting) greeting.style.display = 'flex';
+      // hide landing balloons so they don't overlap the greeting
+      try{ const balloons = document.getElementById('balloon-wrap'); if(balloons) balloons.style.display = 'none'; }catch(e){}
 
       // entrance animations and particles
 
@@ -79,15 +83,24 @@ function openGiftBox() {
       console.error('Greeting open error', err);
       try{ alert('An error occurred while opening the greeting: ' + (err && err.message ? err.message : err)); }catch(e){}
       // best-effort fallback: show greeting and keep gift hidden
-      const container = document.getElementById('gift-box-container'); if(container) container.style.display = 'none';
+      const container = document.getElementById('gift-box-container'); if(container) container.style.display = 'noe';
       const greeting = document.getElementById('greeting'); if(greeting) greeting.style.display = 'flex';
+      try{ const balloons = document.getElementById('balloon-wrap'); if(balloons) balloons.style.display = 'none'; }catch(e){}
     }
   }, 700);
 }
 
+// Spawn initial balloons immediately after the page opens
+window.addEventListener('load', function(){
+  try{
+    // small timeout to ensure layout and fonts are applied
+    setTimeout(function(){ try{ spawnGiftBalloons(10); }catch(e){ console.warn('spawnGiftBalloons on load failed', e); } }, 220);
+  }catch(e){ console.warn('initial balloon spawn setup failed', e); }
+});
+
 /* Typing effect */
 const linesDefault = [
-"Thanks for being by my side always ✨" ,
+"You're always special to me✨" ,
   
 ];
 function startTyping(){
@@ -188,6 +201,46 @@ function startHearts(){
     // clear canvas gently
     try{ ctx.clearRect(0,0,canvas.width,canvas.height); }catch(e){}
   }, 10000);
+}
+
+/* Spawn balloons that originate visually from the gift box */
+function spawnGiftBalloons(count = 8){
+  const box = document.getElementById('gift-box');
+  if(!box) return;
+  // create wrapper if missing
+  let wrap = document.getElementById('gift-balloon-wrap');
+  if(!wrap){ wrap = document.createElement('div'); wrap.id = 'gift-balloon-wrap'; wrap.className = 'gift-balloon-wrap'; document.body.appendChild(wrap); }
+
+  const rect = box.getBoundingClientRect();
+  const startX = rect.left + rect.width/2; // center of box
+  const startY = rect.top + rect.height/6; // slightly above box interior
+
+  const colors = ['color-1','color-2','color-3','color-4','color-5','color-6'];
+  for(let i=0;i<count;i++){
+    const b = document.createElement('div');
+    b.className = 'gift-balloon ' + colors[Math.floor(Math.random()*colors.length)];
+    // randomize size
+    const scale = 0.8 + Math.random()*0.8;
+    const w = Math.round(48 * scale), h = Math.round(64 * scale);
+    b.style.width = w + 'px'; b.style.height = h + 'px';
+    // position at the box center with small horizontal jitter
+    const jitter = (Math.random()-0.5) * rect.width * 0.8;
+    const left = Math.round(startX + jitter - w/2);
+    const top = Math.round(startY - h/2);
+    b.style.left = left + 'px'; b.style.top = top + 'px';
+    // animation timing
+    const dur = 4200 + Math.floor(Math.random()*3600);
+    const delay = Math.floor(Math.random()*420);
+    b.style.animation = `riseFromBox ${dur}ms cubic-bezier(.15,.7,.25,1) forwards`;
+    b.style.animationDelay = delay + 'ms';
+    // add a gentle sway using a short infinite animation on a child wrapper via CSS transform
+    b.style.transition = 'transform 0.2s linear';
+    wrap.appendChild(b);
+    // remove after animation completes (plus small buffer)
+    setTimeout(()=>{ try{ b.remove(); }catch(e){} }, dur + delay + 200);
+  }
+  // optional small extra burst after a moment
+  setTimeout(()=>{ try{ spawnGiftBalloons(Math.max(4, Math.floor(count*0.45))); }catch(e){} }, 700 + Math.random()*800);
 }
 
 /* Autoplay helper */
