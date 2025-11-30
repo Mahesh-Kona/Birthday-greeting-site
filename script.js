@@ -87,7 +87,7 @@ function openGiftBox() {
 
 /* Typing effect */
 const linesDefault = [
-"Thanks for being by my side always ✨" ,
+"You're always special to me✨" ,
   
 ];
 function startTyping(){
