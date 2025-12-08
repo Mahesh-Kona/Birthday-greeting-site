@@ -95,6 +95,8 @@ window.addEventListener('load', function(){
   try{
     // small timeout to ensure layout and fonts are applied
     setTimeout(function(){ try{ spawnGiftBalloons(10); }catch(e){ console.warn('spawnGiftBalloons on load failed', e); } }, 220);
+    // update visitor counter
+    try{ updateVisitCount(); }catch(e){ console.warn('updateVisitCount failed', e); }
   }catch(e){ console.warn('initial balloon spawn setup failed', e); }
 });
 
@@ -241,6 +243,23 @@ function spawnGiftBalloons(count = 8){
   }
   // optional small extra burst after a moment
   setTimeout(()=>{ try{ spawnGiftBalloons(Math.max(4, Math.floor(count*0.45))); }catch(e){} }, 700 + Math.random()*800);
+}
+
+/* Visitor counter using localStorage (per-browser) */
+function updateVisitCount(){
+//   localStorage.removeItem('visitCount');
+// location.reload();
+  const el = document.getElementById('visit-count');
+  if(!el) return;
+  const key = 'visitCount';
+  let current = 0;
+  try{
+    const raw = localStorage.getItem(key);
+    if(raw) current = parseInt(raw, 10) || 0;
+  }catch(e){ current = 0; }
+  current += 1;
+  try{ localStorage.setItem(key, String(current)); }catch(e){ /* ignore */ }
+  el.textContent = current;
 }
 
 /* Autoplay helper */

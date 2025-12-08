@@ -52,6 +52,11 @@ footer{
 
 #click-me-text{ margin-top:18px; font-size:1.05rem; color:var(--pink); font-weight:700; letter-spacing:.6px; text-shadow:0 3px 12px rgba(255,180,210,0.25) }
 
+/* Visitor counter badge */
+#visit-counter{ margin-top:10px; display:inline-flex; align-items:center; gap:8px; padding:8px 12px; background:rgba(255,255,255,0.85); border-radius:14px; box-shadow:0 10px 26px rgba(200,80,140,0.12); backdrop-filter: blur(6px); border:1px solid rgba(255,200,220,0.6); color:#6e1f3b; font-weight:700; font-size:0.95rem; }
+.visit-label{ opacity:0.8; letter-spacing:0.5px }
+.visit-count{ min-width:32px; text-align:center; padding:4px 10px; border-radius:10px; background:linear-gradient(90deg,var(--pink),var(--accent)); color:white; box-shadow:0 6px 16px rgba(255,110,170,0.18); }
+
 /* Greeting overlay */
 #greeting{ position:fixed; inset:0; display:flex; justify-content:center; align-items:center; z-index:10000; }
 #confetti-canvas{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none }
