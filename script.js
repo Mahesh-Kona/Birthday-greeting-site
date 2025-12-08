@@ -100,7 +100,7 @@ window.addEventListener('load', function(){
 
 /* Typing effect */
 const linesDefault = [
-"You're always special to me✨" ,
+"Thank you for everything..." ,
   
 ];
 function startTyping(){
